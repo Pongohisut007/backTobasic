@@ -1,0 +1,183 @@
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 48px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.page-header h1 {
+  font-size: 2rem;
+}
+
+.muted {
+  color: var(--muted);
+  margin: 0;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+/* Buttons & inputs */
+.btn {
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: var(--primary-hover);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--muted);
+}
+
+.btn--ghost:hover {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.btn--danger:hover {
+  color: var(--danger);
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+}
+
+.input:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: -1px;
+}
+
+/* Server info */
+.server-info__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.server-info__header h2 {
+  font-size: 1rem;
+  flex: 1;
+}
+
+.server-info__grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 16px;
+  margin: 12px 0 0;
+  font-size: 0.9rem;
+}
+
+.server-info__grid dt {
+  color: var(--muted);
+}
+
+.server-info__grid dd {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  word-break: break-all;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.status-dot--up {
+  background: var(--success);
+}
+
+.status-dot--down {
+  background: var(--danger);
+}
+
+/* Todos */
+.todo-form {
+  display: flex;
+  gap: 8px;
+}
+
+.alert {
+  margin: 12px 0 0;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  color: var(--danger);
+  font-size: 0.9rem;
+}
+
+.empty {
+  text-align: center;
+  padding: 24px 0 8px;
+}
+
+.todo-list {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 0;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  border-top: 1px solid var(--border);
+}
+
+.todo-item__label {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  word-break: break-word;
+}
+
+.todo-item__label input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary);
+}
+
+.todo-item--done span {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+
+.footer-count {
+  font-size: 0.85rem;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}

@@ -1,33 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import * as os from 'os';
-
-export interface Todo {
-  id: number;
-  title: string;
-}
+import { ConfigService } from '@nestjs/config';
+import { hostname } from 'os';
 
 @Injectable()
 export class AppService {
-  // In-memory only: each pod has its own list and it is lost on restart
-  private todos: Todo[] = [{ id: 1, title: 'Learn Kubernetes' }];
+  constructor(private readonly config: ConfigService) {}
 
   getInfo() {
     return {
-      message: process.env.APP_MESSAGE || 'Hello from NestJS',
-      hostname: os.hostname(),
-      environment: process.env.NODE_ENV || 'development',
-      secretConfigured: !!process.env.APP_SECRET,
-      time: new Date().toISOString(),
+      hostname: hostname(),
+      version: this.config.get<string>('APP_VERSION', 'dev'),
+      environment: this.config.get<string>('NODE_ENV', 'development'),
     };
-  }
-
-  getTodos() {
-    return this.todos;
-  }
-
-  addTodo(title: string) {
-    const todo = { id: Date.now(), title: title || 'untitled' };
-    this.todos.push(todo);
-    return todo;
   }
 }

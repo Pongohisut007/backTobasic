@@ -1,29 +1,13 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  // Use for livenessProbe / readinessProbe
-  @Get('health')
-  health() {
-    return { status: 'ok' };
-  }
-
-  // Shows which pod answered + env values (try ConfigMap / Secret here)
+  // Shows which pod answered the request
   @Get('info')
-  info() {
+  getInfo() {
     return this.appService.getInfo();
-  }
-
-  @Get('todos')
-  getTodos() {
-    return this.appService.getTodos();
-  }
-
-  @Post('todos')
-  addTodo(@Body('title') title: string) {
-    return this.appService.addTodo(title);
   }
 }
