@@ -1,0 +1,22 @@
+service:
+  db:
+    image: postgres:17-alpine
+    environment:
+      dbname: test
+      user: test
+      password: test
+
+  backend:
+    build: ./backend
+    ports:
+      - "3000:3000"
+    environment:
+      test: test
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173" 
+    environment:
+      test: test
+    
