@@ -39,10 +39,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-clusterip-service
+  name: devopsbackend-service
 spec:
   selector:
-    app: myapp
+    app: devopsbackend
   ports:
     - protocol: TCP
       port: 3000

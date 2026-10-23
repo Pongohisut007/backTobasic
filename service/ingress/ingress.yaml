@@ -3,21 +3,22 @@ kind: Ingress
 metadata:
   name: simple-fanout-example
 spec:
+  ingressClassName: nginx
   rules:
-  - host: foo.bar.com
+  - host: localhost
     http:
       paths:
-      - path: /home
-        pathType: Prefix
-        backend:
-          service:
-            name: service1
-            port:
-              number: 5172
       - path: /api
         pathType: Prefix
         backend:
           service:
-            name: service2
+            name: devopsbackend-service
             port:
               number: 3000
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: devopsfrontend-service
+            port:
+              number: 5173

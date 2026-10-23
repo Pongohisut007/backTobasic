@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: devopsfrontend
-        image: "waitbuild"
+        image: pongphisut/devopsfrontend:v1.0
         ports:
         - containerPort: 5173
 
@@ -25,10 +25,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-clusterip-service
+  name: devopsfrontend-service
 spec:
   selector:
-    app: myapp
+    app: devopsfrontend
   ports:
     - protocol: TCP
       port: 5173
