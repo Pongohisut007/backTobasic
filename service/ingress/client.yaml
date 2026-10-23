@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devopsfrontend
+  labels:
+    app: devopsfrontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: devopsfrontend
+  template:
+    metadata:
+      labels:
+        app: devopsfrontend
+    spec:
+      containers:
+      - name: devopsfrontend
+        image: "waitbuild"
+        ports:
+        - containerPort: 5173
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-clusterip-service
+spec:
+  selector:
+    app: myapp
+  ports:
+    - protocol: TCP
+      port: 5173
+      targetPort: 5173
+  type: ClusterIP
