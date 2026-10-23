@@ -18,7 +18,7 @@ spec:
       - name: devopsfrontend
         image: pongphisut/devopsfrontend:v1.0
         ports:
-        - containerPort: 5173
+        - containerPort: 80
 
 ---
 
@@ -32,5 +32,5 @@ spec:
   ports:
     - protocol: TCP
       port: 5173
-      targetPort: 5173
+      targetPort: 80
   type: ClusterIP
