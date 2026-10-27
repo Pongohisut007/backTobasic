@@ -16,8 +16,8 @@ file: service/helm/filebeat/values.yaml
 
 logstash\
 file: service/helm/logstash/values.yaml
-- service port beats 5044
-  why: filebeat connects to logstash on this port
+- enable service (ClusterIP) with port beats 5044 (default chart has it commented out)
+  why: no service -> no logstash-logstash:5044 -> filebeat can not connect
 - logstashPipeline input beats port 5044
   why: the image has a hardcoded logstash.conf, must override it to accept beats
 - logstashPipeline output elasticsearch add cacert, user, password
@@ -28,6 +28,10 @@ file: service/helm/logstash/values.yaml
 - secretMounts elasticsearch-master-certs -> /usr/share/logstash/config/certs
   why: mount ca.crt for cacert
 - indent of pipeline output must match input (yaml parse error "did not find expected key")
+- logstashConfig logstash.yml: http.host 0.0.0.0, xpack.monitoring.enabled false
+  why: monitoring is on by default and tries http://elasticsearch:9200 (wrong host, no auth)
+  -> error "licensechecker ... No Available connections" loops in log
+  http.host 0.0.0.0 must stay when overriding logstash.yml, default probes need it
 
 
 elasticsearch\
@@ -82,7 +86,21 @@ file: service/helm/kibana/values.yaml
   why: this cluster (orbstack/k3s) has only traefik, nginx class does nothing
 - ingress host: kibana.k8s.orb.local
   why: orbstack resolves *.k8s.orb.local by itself, no need to edit /etc/hosts
-- note: chart 8.5.1 upgrade bug (secret kibana-kibana-es-token already exists)
+
+file: service/helm/kibana/templates/ (copied from aovPro/Mobile-app_AOV-Gitops newELK/kibana)
+  configmap-helm-scripts.yaml, pre-install-job.yaml, pre-install-role.yaml,
+  pre-install-rolebinding.yaml, pre-install-serviceaccount.yaml
+- configmap-helm-scripts.yaml: skip if secret kibana-kibana-es-token already exists
+  why: chart 8.5.1 bug, on upgrade the hook deletes old token in elasticsearch,
+  creates new one, then fails with 409 (secret already exists)
+  -> upgrade fails and running kibana has a deleted token
+- pre-install-role.yaml: add verb "get" on secrets
+  why: script needs to check if the token secret exists
+- hook-delete-policy: before-hook-creation,hook-succeeded
+  why: failed hook job stays and blocks next upgrade, now helm deletes it first
+- now upgrade is only:
+  helm upgrade kibana ./kibana -n default -f kibana/values.yaml
+- old workaround (only if using original chart templates):
   kubectl delete secret kibana-kibana-es-token
   helm upgrade kibana ./kibana -n default -f kibana/values.yaml
   kubectl rollout restart deploy/kibana-kibana
